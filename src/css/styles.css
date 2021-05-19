@@ -6,6 +6,10 @@
     font-family: 'Lexend Deca', sans-serif;
 }
 
+body{
+    background:#f2f2f2;
+}
+
 a{
     text-decoration: none;
 }

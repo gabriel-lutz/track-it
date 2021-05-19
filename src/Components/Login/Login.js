@@ -41,9 +41,10 @@ export default function Login(){
 }
 
 const Conteiner = styled.div`
+    height:100vh;
+    background:white;
     display:flex;
     flex-direction:column;
-    justify-content:center;
     align-items:center;
     img{
         margin: 50px 0;

@@ -13,15 +13,8 @@ export default function Cadastro(){
 
     function Cadastrar(){
         setDisabled(true)
-        const body = {
-            email: data.email,
-            name: data.name,
-            image: data.image,
-            password: data.password 
-        }
-        const response = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", body)
+        const response = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", data)
         response.then(()=>{
-            
             history.push("/")
         })
         response.catch(()=>{
@@ -50,9 +43,10 @@ export default function Cadastro(){
 }
 
 const Conteiner = styled.div`
+    height:100vh;
+    background:white;
     display:flex;
     flex-direction:column;
-    justify-content:center;
     align-items:center;
     img{
         margin: 50px 0;
