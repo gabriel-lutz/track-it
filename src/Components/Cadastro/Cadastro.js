@@ -1,15 +1,45 @@
 import img from "../../images/Logo.png"
 import styled from "styled-components"
-import {Link} from "react-router-dom"
+import {Link, useHistory} from "react-router-dom"
+import axios from "axios"
+import { useState } from "react"
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 export default function Cadastro(){
+    const [data, setData] = useState({email: "", password: "", name: "", image:"" })
+    const [disabled, setDisabled] = useState(false)
+    const history = useHistory()
+
+
+    function Cadastrar(){
+        setDisabled(true)
+        const body = {
+            email: data.email,
+            name: data.name,
+            image: data.image,
+            password: data.password 
+        }
+        const response = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", body)
+        response.then(()=>{
+            
+            history.push("/")
+        })
+        response.catch(()=>{
+            alert("Oops!! Algo deu errado. Tente novamente")
+            setDisabled(false)
+        })
+    }
+
     return(
         <Conteiner>
             <img src={img}/>
-            <Input placeholder="email" ></Input>
-            <Input placeholder="senha" ></Input>
-            <Input placeholder="nome" ></Input>
-            <Input placeholder="foto" ></Input>
-            <Button> Cadastrar </Button>
+            <Input placeholder="email" disabled={disabled} onChange={(e)=> setData({...data, email: e.target.value})} value={data.email} ></Input>
+            <Input placeholder="senha" disabled={disabled} onChange={(e)=> setData({...data, password: e.target.value})} value={data.password}></Input>
+            <Input placeholder="nome" disabled={disabled} onChange={(e)=> setData({...data, name: e.target.value})} value={data.name}></Input>
+            <Input placeholder="foto" disabled={disabled} onChange={(e)=> setData({...data, image: e.target.value})} value={data.image}></Input>
+            <Button onClick={Cadastrar} disabled={disabled} > 
+                {!disabled? "Cadastrar" : <Loader type="ThreeDots" color="#ffffff" height={13} timeout={0}/> }
+             </Button>
             <Link to="/">
                 <Div >Já tem uma conta? Faça login!</Div>
             </Link>
@@ -38,6 +68,7 @@ const Input = styled.input`
     border: 1px solid #d5d5d5;
     padding: 0 10px;
     font-size:20px;
+    color: #AFAFAF;
     &::placeholder{
         color:#DBDBDB; 
     }
@@ -51,11 +82,15 @@ const Button = styled.button`
     outline:none;
     font-size:21px;
     color: white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-indent: -1px;
 `
 
 const Div = styled.div`
     margin-top: 25px;
     font-size: 14px;
     color:#52b6ff;
-    
+    text-decoration-line: underline;
 `
