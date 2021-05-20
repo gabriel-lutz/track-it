@@ -1,9 +1,13 @@
 import styled from "styled-components"
 import {Link} from "react-router-dom"
+import {useContext} from "react"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import UserContext from '../../contexts/UserContext';
 
 export default function Navbar(){
+    const {data,setData} = useContext(UserContext)
+    
     return(
         <Conteiner>
             <Link to="/habitos">
@@ -11,7 +15,7 @@ export default function Navbar(){
             </Link>
             <Link to="/hoje">
                 <Progress>
-                    <CircularProgressbar background={true} backgroundPadding={6}strokeWidth={8} value={66} text={`Hoje`}
+                    <CircularProgressbar background={true} backgroundPadding={6}strokeWidth={8} value={(100*data.habitsDone) /data.totalHabits} text={`Hoje`}
                     styles={buildStyles({
                         pathTransitionDuration: 1,
                         textSize: '18px',

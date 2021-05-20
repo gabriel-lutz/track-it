@@ -3,19 +3,19 @@ import styled from "styled-components"
 import {Link, useHistory} from "react-router-dom"
 import axios from "axios"
 import { useState } from "react"
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Loader from "react-loader-spinner";
-export default function Login(){
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import Loader from "react-loader-spinner"
+export default function Login({setUserData}){
     const [data, setData] = useState({email: "", password: ""})
     const [disabled, setDisabled] = useState(false)
     const history = useHistory()
 
-    console.log(data)
-    function logar(){
+    function logar(event){
+        event.preventDefault()
         setDisabled(true)
         const response = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", data)
         response.then((data)=>{
-            console.log(data)
+            setUserData({...data.data, todayHabits: [] })
             history.push("/hoje")
         })
         response.catch(()=>{
@@ -28,11 +28,15 @@ export default function Login(){
     return(
             <Conteiner>
                 <img src={img}/>
-                <Input placeholder="email" disabled={disabled} onChange={(e)=> setData({...data, email: e.target.value})} value={data.email} ></Input>
-                <Input placeholder="senha" disabled={disabled} type="password" onChange={(e)=> setData({...data, password: e.target.value})} value={data.password} ></Input>
-                <Button onClick={logar} disabled={disabled} > 
-                    {!disabled? "Logar" : <Loader type="ThreeDots" color="#ffffff" height={13} timeout={0}/> }
-                 </Button>
+                <div>
+                    <Form onSubmit={logar}>
+                        <Input placeholder="email" disabled={disabled} type="email" required onChange={(e)=> setData({...data, email: e.target.value})} value={data.email} ></Input>
+                        <Input placeholder="senha" disabled={disabled} type="password" required onChange={(e)=> setData({...data, password: e.target.value})} value={data.password} ></Input>
+                        <Button type="submit" disabled={disabled} > 
+                            {!disabled? "Logar" : <Loader type="ThreeDots" color="#ffffff" height={13} timeout={0}/> }
+                        </Button>
+                    </Form>
+                </div>
                 <Link to="/cadastro">
                     <Div >Não tem uma conta? Cadastre-se!</Div>
                 </Link>
@@ -81,4 +85,9 @@ const Div = styled.div`
     font-size: 14px;
     color:#52b6ff;
     text-decoration-line: underline;
+`
+
+const Form = styled.form`
+width: 303px;
+
 `

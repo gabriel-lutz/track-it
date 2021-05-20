@@ -11,7 +11,8 @@ export default function Cadastro(){
     const history = useHistory()
 
 
-    function Cadastrar(){
+    function cadastrar(event){
+        event.preventDefault()
         setDisabled(true)
         const response = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", data)
         response.then(()=>{
@@ -26,13 +27,15 @@ export default function Cadastro(){
     return(
         <Conteiner>
             <img src={img}/>
-            <Input placeholder="email" disabled={disabled} onChange={(e)=> setData({...data, email: e.target.value})} value={data.email} ></Input>
-            <Input placeholder="senha" disabled={disabled} onChange={(e)=> setData({...data, password: e.target.value})} value={data.password}></Input>
-            <Input placeholder="nome" disabled={disabled} onChange={(e)=> setData({...data, name: e.target.value})} value={data.name}></Input>
-            <Input placeholder="foto" disabled={disabled} onChange={(e)=> setData({...data, image: e.target.value})} value={data.image}></Input>
-            <Button onClick={Cadastrar} disabled={disabled} > 
-                {!disabled? "Cadastrar" : <Loader type="ThreeDots" color="#ffffff" height={13} timeout={0}/> }
-             </Button>
+            <Form onSubmit={cadastrar}>
+                <Input placeholder="email" disabled={disabled} type="email" required onChange={(e)=> setData({...data, email: e.target.value})} value={data.email} ></Input>
+                <Input placeholder="senha" disabled={disabled} type="password" required onChange={(e)=> setData({...data, password: e.target.value})} value={data.password}></Input>
+                <Input placeholder="nome" disabled={disabled} type="text" required onChange={(e)=> setData({...data, name: e.target.value})} value={data.name}></Input>
+                <Input placeholder="foto" disabled={disabled} type="text" required onChange={(e)=> setData({...data, image: e.target.value})} value={data.image}></Input>
+                <Button type="submit" required disabled={disabled} > 
+                    {!disabled? "Cadastrar" : <Loader type="ThreeDots" color="#ffffff" height={13} timeout={0}/> }
+                </Button>
+            </Form>
             <Link to="/">
                 <Div >Já tem uma conta? Faça login!</Div>
             </Link>
@@ -87,4 +90,9 @@ const Div = styled.div`
     font-size: 14px;
     color:#52b6ff;
     text-decoration-line: underline;
+`
+
+const Form = styled.form`
+width: 303px;
+
 `
