@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { useState } from "react"
-export default function CheckBox({day, i, newHabit, setNewHabit}){
+export default function CheckBox({day, i, newHabit, setNewHabit, disabled}){
     const [selected,setSelected] = useState(false)
 
     function setDay(){
@@ -21,11 +21,11 @@ export default function CheckBox({day, i, newHabit, setNewHabit}){
 
     }
     return(
-        <Checkbox onClick={setDay} selected={selected}> {day} </Checkbox>
+        <Checkbox type="button" onClick={setDay} disabled={disabled} selected={selected}> {day} </Checkbox>
     )
     
 }
-const Checkbox = styled.div`
+const Checkbox = styled.button`
      width:30px;
      height:30px;
      border-radius:5px;
@@ -34,6 +34,7 @@ const Checkbox = styled.div`
      justify-content: center;
      align-items: center;
      margin-right: 4px;
+     outline:none;
      color: ${props => props.selected>0 ? "#FFF" : "#CFCFCF"};
      background: ${props => props.selected>0 ? "#BABABA" : "#FFF"};
 `

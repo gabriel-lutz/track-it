@@ -60,7 +60,7 @@ const Conteiner = styled.div`
 const Box = styled.div`
     display:flex;
 `
-const Checkbox = styled.div`
+const Checkbox = styled.button`
      width:30px;
      height:30px;
      border-radius:5px;

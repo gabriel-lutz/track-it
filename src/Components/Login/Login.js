@@ -15,7 +15,7 @@ export default function Login({setUserData}){
         setDisabled(true)
         const response = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", data)
         response.then((data)=>{
-            setUserData({...data.data, todayHabits: [] })
+            setUserData({...data.data, todayHabits: [],habitsDone:0, allHabits:[] })
             history.push("/hoje")
         })
         response.catch(()=>{

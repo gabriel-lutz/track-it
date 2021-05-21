@@ -6,9 +6,10 @@ import Login from "./Login/Login"
 import Cadastro from "./Cadastro/Cadastro"
 import Hoje from "./Hoje/Hoje"
 import Habitos from "./Habitos/Habitos"
+import Historico from "./Historico/Historico"
 
 export default function App(){
-    const [userData, setUserData] = useState({habitsDone:0})
+    const [userData, setUserData] = useState({})
     
     return(
         <UserContext.Provider value={{data: userData, setData: setUserData }}>
@@ -25,6 +26,9 @@ export default function App(){
                     </Route>
                     <Route path="/habitos" exact>
                         <Habitos />
+                    </Route>
+                    <Route path="/historico" exact>
+                        <Historico />
                     </Route>
                 </Switch>
             </BrowserRouter>
