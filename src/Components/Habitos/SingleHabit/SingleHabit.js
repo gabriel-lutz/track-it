@@ -1,25 +1,22 @@
 import styled from "styled-components"
-import { TrashOutline } from 'react-ionicons'
 import axios from "axios"
-import UserContext from '../../../contexts/UserContext';
-import { useState, useContext,useEffect } from "react"
-export default function SingleHabit({habit, setRefresh, refresh}){
+import { TrashOutline } from 'react-ionicons'
+import { useContext } from "react"
 
-    const {data,setData} = useContext(UserContext)
-    const config = {
-        headers: {
-            "Authorization": `Bearer ${data.token}`
-        }
-    }
+import UserContext from '../../../contexts/UserContext';
+
+export default function SingleHabit({habit, setRefresh, refresh}){
+    const {data} = useContext(UserContext)
+    const config = {headers: {"Authorization": `Bearer ${data.token}`}}
+
     function Delete(){
         if(window.confirm("Você tem certeza que quer deletar esse habito?")){
             const response = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}`, config)
             response.then(()=> setRefresh(refresh+1))
-            response.catch(()=> console.log("Oops, parece que deu algo errado, tente novamente"))
+            response.catch(()=> alert("Oops, parece que deu algo errado, tente novamente"))
         }
     }
 
-    console.log(refresh)
     return(
         <Conteiner>
             <h1>{habit.name}</h1>

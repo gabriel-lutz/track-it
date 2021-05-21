@@ -1,10 +1,11 @@
 import img from "../../images/Logo.png"
 import styled from "styled-components"
-import {Link, useHistory} from "react-router-dom"
 import axios from "axios"
+import { Link, useHistory } from "react-router-dom"
 import { useState } from "react"
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import Loader from "react-loader-spinner"
+
 export default function Login({setUserData}){
     const [data, setData] = useState({email: "", password: ""})
     const [disabled, setDisabled] = useState(false)
@@ -24,10 +25,9 @@ export default function Login({setUserData}){
         })
     }
 
-
     return(
             <Conteiner>
-                <img src={img}/>
+                <img src={img} alt="logo"/>
                 <div>
                     <Form onSubmit={logar}>
                         <Input placeholder="email" disabled={disabled} type="email" required onChange={(e)=> setData({...data, email: e.target.value})} value={data.email} ></Input>

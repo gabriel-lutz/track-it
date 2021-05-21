@@ -1,52 +1,46 @@
 import styled from "styled-components"
 import { CheckmarkOutline } from 'react-ionicons'
-import { useState, useContext, useEffect } from "react"
+import { useContext} from "react"
 import axios from "axios"
+
 import UserContext from '../../contexts/UserContext';
 
 export default function Habit({habit, refresh, setRefresh}){
-    const {data,setData} = useContext(UserContext)
-    const [useServerAsDefault,setUseServerAsDefault] = useState(true)
-    const [isDone, setIsDone] = useState(habit.done)
-    const body = {}
-    const config = {
-        headers: {
-            "Authorization": `Bearer ${data.token}`
+    const {data} = useContext(UserContext)
+
+    function marcarEDesmarcar(){
+        if(habit.done){
+            const response = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, {headers: {"Authorization": `Bearer ${data.token}`}})
+            response.then(()=>{
+                setRefresh(refresh + 1)
+            })
+            response.catch(()=>{
+                alert("Oops, parece que algo deu errado, tente novamente")
+            })
+        }else{
+            const response = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, {headers: {"Authorization": `Bearer ${data.token}`}})
+            response.then(()=>{
+                setRefresh(refresh + 1)
+            })
+            response.catch(()=>{
+                alert("Oops, parece que algo deu errado, tente novamente")
+            })
         }
     }
 
-    function marcarEDesmarcar(){
-        setUseServerAsDefault(false)
-        if(isDone){
-            
-            const response = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, body, config)
-            response.then(()=>{
-                setRefresh(refresh + 1)
-                setIsDone(false)
-            })
-            response.catch(()=>{
-                setIsDone(true)
-            })
-        }else{
-            
-            
-            const response = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, body, config)
-            response.then(()=>{setRefresh(refresh + 1)
-                setIsDone(true)
-            })
-            response.catch(()=>{
-                setIsDone(false)
-            })
-        }
-    }
+
     return(
         <Conteiner>
             <Description>
                 <h1>{habit.name}</h1>
-                <p>Sequencia atual: <Sequence done={isDone}>{habit.currentSequence} dias</Sequence></p>
-                <p>Seu recorde: <Sequence done={habit.currentSequence===habit.highestSequence && habit.highestSequence != 0}>{habit.highestSequence} dias</Sequence></p>
+                <p>Sequencia atual: <Sequence done={habit.done}>{habit.currentSequence} dias</Sequence></p>
+                <p>Seu recorde: 
+                    <Sequence done={habit.currentSequence===habit.highestSequence && habit.highestSequence !== 0}>
+                              {habit.highestSequence} dias
+                    </Sequence>
+                </p>
             </Description>
-            <Check done={useServerAsDefault? habit.done : isDone } onClick={marcarEDesmarcar}>
+            <Check done={habit.done} onClick={marcarEDesmarcar}>
                 <CheckmarkOutline color={'#ffffff'} title={'Check'} height="40px" width="40px" />
             </Check>
         </Conteiner>
@@ -63,6 +57,7 @@ const Conteiner = styled.div`
     justify-content: space-between;
     align-items: center;
 `
+
 const Description = styled.div`
     width:210px;
     color:#666;
@@ -90,47 +85,3 @@ const Check = styled.div`
 const Sequence = styled.span`
     color:  ${props => props.done ? "#8FC549" : "#666"} ;
 `
-
-
-
-
-
-
-
-
-/*
-function marcarEDesmarcar(){
-        setUseServerAsDefault(false)
-        if(isDone){
-            const addedHabitList = data.todayHabits.map((h, i)=>{
-                if(habit === h){
-                   return h.currentSequence >= h.highestSequence? {...h, currentSequence: h.currentSequence-1, highestSequence: h.highestSequence-1} :  {...h, currentSequence: h.currentSequence-1}
-                }else{
-                    return h
-                }
-            })
-            setIsDone(false)
-            setData({...data, habitsDone: data.habitsDone-1, todayHabits: addedHabitList})
-            const response = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, body, config)
-            response.catch(()=>{
-                setIsDone(true)
-            })
-        }else{
-            const addedHabitList = data.todayHabits.map((h, i)=>{
-                if(habit === h){
-                   return h.currentSequence === h.highestSequence? {...h, currentSequence: h.currentSequence+1, highestSequence: h.highestSequence+1} :  {...h, currentSequence: h.currentSequence+1}
-                }else{
-                    return h
-                }
-            })
-            setIsDone(true)
-            setData({...data, habitsDone: data.habitsDone+1, todayHabits: addedHabitList})
-            const response = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, body, config)
-            response.catch(()=>{
-                setIsDone(false)
-            })
-        }
-    }
-
-
-*/ 

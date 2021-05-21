@@ -2,26 +2,31 @@ import styled from "styled-components"
 import { useContext, useEffect,useState } from "react";
 import axios from "axios"
 import dayjs from 'dayjs'
+
 import Header from "../Header/Header"
 import Navbar from "../Navbar/Navbar"
 import Habit from "../Habit/Habit"
 import UserContext from '../../contexts/UserContext';
+
+require('dayjs/locale/pt-br')
+
 export default function Hoje(){
     const {data,setData} = useContext(UserContext)
     const [refresh, setRefresh] = useState(0)
+    const day = dayjs().locale("pt-br").format('dddd[,] DD/MM')
     const done = (100*data.habitsDone) /data.totalHabits
-    const config = {
-        headers: {
-            "Authorization": `Bearer ${data.token}`
-        }
-    }
-    useEffect(()=>{
-        const response = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
-        response.then((responseData)=>{
-            setData({...data, todayHabits: responseData.data, totalHabits: responseData.data.length, habitsDone: countHabitsDone(responseData.data) })
-    })},[refresh])
 
-    
+    useEffect(()=>{
+        const response = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", 
+                        {headers: {"Authorization": `Bearer ${data.token}`}})
+        response.then((responseData)=>{
+            setData({...data, 
+                todayHabits: responseData.data, 
+                totalHabits: responseData.data.length, 
+                habitsDone: countHabitsDone(responseData.data) 
+            })
+    })},[refresh, data, setData ])
+
     function countHabitsDone(data){
         let total = 0;
         data.forEach(habit => {
@@ -31,26 +36,20 @@ export default function Hoje(){
         })
         return total
     }
-    const dayNames=["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sabado"]
-    const date = `${dayjs().date()}/0${dayjs().month()+1}`
-    const weekday = dayNames[dayjs().day()]
-    console.log(data)
+    
     return(
         <>
             <Header/>
             <Conteiner>
                 <Day>
-                    {weekday}, {date}
+                    {day}
                 </Day>
                 <HabitsDone done={done}>
-                    {done>0? `${done}% dos hábitos concluídos` : "Nenhum hábito concluido ainda" }
-                    
+                    {done>0? `${done.toFixed()}% dos hábitos concluídos` : "Nenhum hábito concluido ainda" }
                 </HabitsDone>
                 {data.todayHabits.map(habit=>{
-                    return <Habit habit={habit}  setRefresh={setRefresh} refresh={refresh}/>
+                    return <Habit key={habit.id} habit={habit}  setRefresh={setRefresh} refresh={refresh}/>
                 })} 
-                
-
             </Conteiner>
             <Navbar/>
         </>
@@ -77,5 +76,4 @@ const HabitsDone = styled.p`
     font-size: 18px;
     margin:8px 0;
     margin-bottom:20px;
-
 `
