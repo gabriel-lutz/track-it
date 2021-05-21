@@ -13,7 +13,7 @@ export default function SingleHabit({habit, setRefresh, refresh}){
         if(window.confirm("Você tem certeza que quer deletar esse habito?")){
             const response = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}`, config)
             response.then(()=> setRefresh(refresh+1))
-            response.catch(()=> alert("Oops, parece que deu algo errado, tente novamente"))
+            response.catch(()=> alert("Oops!! Algo deu errado. Tente novamente"))
         }
     }
 
@@ -42,14 +42,14 @@ export default function SingleHabit({habit, setRefresh, refresh}){
 }
 
 const Conteiner = styled.div`
-    width:340px;
-    height:91px;
     padding:15px;
     background: white;
     position:relative;
     margin-bottom:10px;
     border-radius:5px;
     h1{
+        word-break:break-all;
+        width:80%;
         font-size:20px;
         color:#666;
     }

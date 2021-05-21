@@ -3,7 +3,7 @@ import { CheckmarkOutline } from 'react-ionicons'
 import { useContext} from "react"
 import axios from "axios"
 
-import UserContext from '../../contexts/UserContext';
+import UserContext from '../../../contexts/UserContext';
 
 export default function Habit({habit, refresh, setRefresh}){
     const {data} = useContext(UserContext)
@@ -15,7 +15,7 @@ export default function Habit({habit, refresh, setRefresh}){
                 setRefresh(refresh + 1)
             })
             response.catch(()=>{
-                alert("Oops, parece que algo deu errado, tente novamente")
+                alert("Oops!! Algo deu errado. Tente novamente")
             })
         }else{
             const response = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, {headers: {"Authorization": `Bearer ${data.token}`}})
@@ -23,7 +23,7 @@ export default function Habit({habit, refresh, setRefresh}){
                 setRefresh(refresh + 1)
             })
             response.catch(()=>{
-                alert("Oops, parece que algo deu errado, tente novamente")
+                alert("Oops!! Algo deu errado. Tente novamente")
             })
         }
     }
@@ -59,9 +59,10 @@ const Conteiner = styled.div`
 `
 
 const Description = styled.div`
-    width:210px;
+    width:80%;
     color:#666;
     h1{
+        word-break:break-all;
         font-size:20px;
         margin-top:5px;
         margin-bottom:10px;

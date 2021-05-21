@@ -20,6 +20,9 @@ export default function Habitos(){
         response.then((responseData)=>{
             setData({...data, allHabits: [...responseData.data] })
         })
+        response.catch(()=>{
+            alert("Oops!! Algo deu errado. Tente novamente")
+        })
     }, [refresh, data, setData])
 
     function postHabit(event){
@@ -38,7 +41,7 @@ export default function Habitos(){
             setNewHabit({name:"", days:[]})
         })
         response.catch(()=>{
-            alert("Oops, algo deu errado, tente novamente")
+            alert("Oops!! Algo deu errado. Tente novamente")
             setDisabled(false)
         })
     }

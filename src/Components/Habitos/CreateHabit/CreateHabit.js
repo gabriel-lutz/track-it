@@ -2,7 +2,7 @@ import styled from "styled-components"
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import Loader from "react-loader-spinner"
 
-import CheckBox from "../CheckBox/CheckBox"
+import CheckBox from "./CheckBox/CheckBox"
 
 export default function CreateHabit({postHabit, disabled, newHabit, setNewHabit, displayNewHabit}){
     const days = ["D","S","T","Q","Q","S","S"]
@@ -45,7 +45,7 @@ const NewHabit = styled.div`
     padding:18px;
 `
 const Input = styled.input`
-    width: 303px;
+width:100%;
     height: 45px;
     margin-bottom:6px; 
     border-radius: 5px;

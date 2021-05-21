@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 
 import Header from "../Header/Header"
 import Navbar from "../Navbar/Navbar"
-import Habit from "../Habit/Habit"
+import Habit from "./Habit/Habit"
 import UserContext from '../../contexts/UserContext';
 
 require('dayjs/locale/pt-br')
@@ -25,6 +25,7 @@ export default function Hoje(){
                 totalHabits: responseData.data.length, 
                 habitsDone: countHabitsDone(responseData.data) 
             })
+        response.catch(()=> alert("Oops!! Algo deu errado. Tente novamente"))
     })},[refresh, data, setData ])
 
     function countHabitsDone(data){
