@@ -64,6 +64,7 @@ const Input = styled.input`
     border: 1px solid #d5d5d5;
     padding: 0 10px;
     font-size:20px;
+    outline:none;
     &::placeholder{
         color:#DBDBDB; 
     }

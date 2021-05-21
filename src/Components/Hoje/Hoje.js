@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useContext, useEffect } from "react";
+import { useContext, useEffect,useState } from "react";
 import axios from "axios"
 import dayjs from 'dayjs'
 import Header from "../Header/Header"
@@ -8,6 +8,7 @@ import Habit from "../Habit/Habit"
 import UserContext from '../../contexts/UserContext';
 export default function Hoje(){
     const {data,setData} = useContext(UserContext)
+    const [refresh, setRefresh] = useState(0)
     const done = (100*data.habitsDone) /data.totalHabits
     const config = {
         headers: {
@@ -18,7 +19,7 @@ export default function Hoje(){
         const response = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
         response.then((responseData)=>{
             setData({...data, todayHabits: responseData.data, totalHabits: responseData.data.length, habitsDone: countHabitsDone(responseData.data) })
-    })},[])
+    })},[refresh])
 
     
     function countHabitsDone(data){
@@ -33,6 +34,7 @@ export default function Hoje(){
     const dayNames=["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sabado"]
     const date = `${dayjs().date()}/0${dayjs().month()+1}`
     const weekday = dayNames[dayjs().day()]
+    console.log(data)
     return(
         <>
             <Header/>
@@ -45,7 +47,7 @@ export default function Hoje(){
                     
                 </HabitsDone>
                 {data.todayHabits.map(habit=>{
-                    return <Habit habit={habit}/>
+                    return <Habit habit={habit}  setRefresh={setRefresh} refresh={refresh}/>
                 })} 
                 
 
@@ -57,6 +59,7 @@ export default function Hoje(){
 
 const Conteiner = styled.div`
     margin-top: 98px;
+    margin-bottom: 100px;
     display:flex;
     flex-direction:column;
     align-items:left;

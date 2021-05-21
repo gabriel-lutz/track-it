@@ -1,10 +1,11 @@
 import { useState } from "react"
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import dayjs from 'dayjs'
+
 import UserContext from '../contexts/UserContext';
 import Login from "./Login/Login"
 import Cadastro from "./Cadastro/Cadastro"
 import Hoje from "./Hoje/Hoje"
+import Habitos from "./Habitos/Habitos"
 
 export default function App(){
     const [userData, setUserData] = useState({habitsDone:0})
@@ -21,6 +22,9 @@ export default function App(){
                     </Route>
                     <Route path="/hoje" exact>
                         <Hoje />
+                    </Route>
+                    <Route path="/habitos" exact>
+                        <Habitos />
                     </Route>
                 </Switch>
             </BrowserRouter>
